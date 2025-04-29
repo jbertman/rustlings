@@ -4,7 +4,7 @@
 // return values into a vector.
 
 use std::{
-    thread,
+    result, thread,
     time::{Duration, Instant},
 };
 
@@ -24,6 +24,12 @@ fn main() {
     for handle in handles {
         // TODO: Collect the results of all threads into the `results` vector.
         // Use the `JoinHandle` struct which is returned by `thread::spawn`.
+        // results.push(handle.join().unwrap())
+        let res = match handle.join() {
+            Ok(x) => x,
+            Err(_) => panic!("error joining thread"),
+        };
+        results.push(res);
     }
 
     if results.len() != 10 {
